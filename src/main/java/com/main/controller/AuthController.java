@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.learn.entity.Employee;
 import com.main.entity.User;
 import com.main.services.UserService;
 import com.main.util.JwtUtil;
@@ -48,7 +47,7 @@ public class AuthController {
 
     @ApiResponses({
 		@ApiResponse(responseCode = "200", content = {
-				@Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class)) }),
+				@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
 		@ApiResponse(responseCode = "404", description = "User not found", content = @Content) })
     @Operation(summary = "Register User",description = "User Role : 1 - Admin | 2 - User")
     @PostMapping("/register")
@@ -61,7 +60,7 @@ public class AuthController {
 
     @ApiResponses({
 		@ApiResponse(responseCode = "200", content = {
-				@Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class)) }),
+				@Content(mediaType = "application/json", schema = @Schema(implementation = User.class)) }),
 		@ApiResponse(responseCode = "404", description = "User not found", content = @Content) })
     @Operation(summary = "Login User",description = "User Role : 1 - Admin | 2 - User")
     @PostMapping("/login")
