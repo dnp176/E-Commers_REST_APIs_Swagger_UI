@@ -28,19 +28,36 @@ public class JwtSecurityConfig{
         this.jwtRequestFilter = jwtRequestFilter;
         this.userDetailsService = userDetailsService;
     }
-
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        
         http.csrf().disable()
-        .authorizeHttpRequests(auth -> auth
-                
-                .requestMatchers("/api/auth/**", "/swagger-ui/**","/api-docs/**")
-                .permitAll()
-                .requestMatchers("/api/auth/**").permitAll() 
-                .anyRequest().authenticated() 
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/api-docs/**")
+                .permitAll()  // Allow access to Swagger and auth APIs without authentication
+                .anyRequest().authenticated()  // All other requests need to be authenticated
             )
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+            .requiresChannel()  // Forces HTTPS for all requests
+            .anyRequest().requiresSecure();  // Enforces HTTPS for every request
+
+        // Add JWT filter before UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  
+
+        return http.build();
+    }
+
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        
+//        http.csrf().disable()
+//        .authorizeHttpRequests(auth -> auth
+//                
+//                .requestMatchers("/api/auth/**", "/swagger-ui/**","/api-docs/**")
+//                .permitAll()
+//                .requestMatchers("/api/auth/**").permitAll() 
+//                .anyRequest().authenticated() 
+//            )
+//            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
     	//----------------------------------------------------
 //    	http.csrf().disable()  // CSRF ko disable karte hai
@@ -49,8 +66,8 @@ public class JwtSecurityConfig{
 //        )
 //        .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Filter abhi bhi available hoga, lekin har request permitAll hogi
 
-        return http.build();
-    }
+//        return http.build();
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

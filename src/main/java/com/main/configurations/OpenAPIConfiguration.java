@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-
+import io.swagger.v3.oas.models.servers.Server;
 @OpenAPIDefinition
 @Configuration
 public class OpenAPIConfiguration  {
@@ -39,6 +39,7 @@ public class OpenAPIConfiguration  {
                                 .email("demouser@xyz.com")))
                 .addSecurityItem(securityRequirement)
                 .components(new Components()
-                        .addSecuritySchemes("bearerAuth", securityScheme));
+                        .addSecuritySchemes("bearerAuth", securityScheme))
+        .addServersItem(new Server().url("https://e-commersrestapisswaggerui-production.up.railway.app"));  // Update this line with your HTTPS URL
     }
 }
