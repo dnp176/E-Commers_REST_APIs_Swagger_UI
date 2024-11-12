@@ -1,6 +1,7 @@
 package com.main.configurations;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,9 @@ import io.swagger.v3.oas.models.servers.Server;
 @OpenAPIDefinition
 @Configuration
 public class OpenAPIConfiguration  {
+	
+	@Value("${server.url}")
+    private String serverUrl;
 	
 	@Bean
     public OpenAPI customOpenAPI() {
@@ -40,6 +44,6 @@ public class OpenAPIConfiguration  {
                 .addSecurityItem(securityRequirement)
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth", securityScheme))
-        .addServersItem(new Server().url("https://e-commersrestapisswaggerui-production.up.railway.app"));  // Update this line with your HTTPS URL
+        .addServersItem(new Server().url(serverUrl));  // Update this line with your HTTPS URL
     }
 }
