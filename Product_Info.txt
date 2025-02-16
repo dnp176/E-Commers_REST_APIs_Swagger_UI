@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "productImg": "https://via.placeholder.com/150",
+    "productName": "Wireless Bluetooth Headphones",
+    "productDescription": "High-quality wireless headphones with noise cancellation and long battery life.",
+    "productPrice": 2499,
+    "productStock": 500,
+    "productCategory": 1,
+    "createdDate": "2025-02-16T13:36:28.745Z"
+  },
+  {
+    "id": 2,
+    "productImg": "https://via.placeholder.com/150",
+    "productName": "Gaming Mechanical Keyboard",
+    "productDescription": "RGB backlit mechanical keyboard with customizable keys and durable design.",
+    "productPrice": 3599,
+    "productStock": 300,
+    "productCategory": 2,
+    "createdDate": "2025-02-16T13:36:28.745Z"
+  },
+  {
+    "id": 3,
+    "productImg": "https://via.placeholder.com/150",
+    "productName": "Smart LED TV 55-inch",
+    "productDescription": "4K Ultra HD Smart TV with built-in apps, voice control, and HDR support.",
+    "productPrice": 44999,
+    "productStock": 150,
+    "productCategory": 3,
+    "createdDate": "2025-02-16T13:36:28.745Z"
+  },
+  {
+    "id": 4,
+    "productImg": "https://via.placeholder.com/150",
+    "productName": "Fitness Smartwatch",
+    "productDescription": "Waterproof smartwatch with heart rate monitor, GPS, and sleep tracking.",
+    "productPrice": 5999,
+    "productStock": 400,
+    "productCategory": 4,
+    "createdDate": "2025-02-16T13:36:28.745Z"
+  },
+  {
+    "id": 5,
+    "productImg": "https://via.placeholder.com/150",
+    "productName": "Portable Bluetooth Speaker",
+    "productDescription": "Compact and powerful speaker with deep bass and long battery life.",
+    "productPrice": 1999,
+    "productStock": 600,
+    "productCategory": 5,
+    "createdDate": "2025-02-16T13:36:28.745Z"
+  }
+]
