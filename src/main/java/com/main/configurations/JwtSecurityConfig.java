@@ -16,55 +16,52 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.main.util.JwtRequestFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
-public class JwtSecurityConfig{
+public class JwtSecurityConfig {
 
-
-	private final JwtRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
     private final UserDetailsService userDetailsService;
+
+    // Flag to enable/disable authentication for all endpoints
+    private static final boolean ENABLE_ALL_ENDPOINTS = true;
+
+    // List of publicly accessible endpoints (if authentication is enabled)
+    private static final List<String> PUBLIC_ENDPOINTS = List.of(
+            "/api/auth/**",
+            "/swagger-ui/**",
+            "/api-docs/**",
+            "/actuator/**",
+            "/actuator/prometheus/**"
+    );
 
     public JwtSecurityConfig(JwtRequestFilter jwtRequestFilter, UserDetailsService userDetailsService) {
         this.jwtRequestFilter = jwtRequestFilter;
         this.userDetailsService = userDetailsService;
     }
-    
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//            .authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/api-docs/**")
-//                .permitAll()  // Allow access to Swagger and auth APIs without authentication
-//                .anyRequest().authenticated()  // All other requests need to be authenticated
-//            )
-//            .requiresChannel()  // Forces HTTPS for all requests
-//            .anyRequest().requiresSecure();  // Enforces HTTPS for every request
-//
-//        // Add JWT filter before UsernamePasswordAuthenticationFilter
-//        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  
-//
-//        return http.build();
-//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         
-        http.csrf().disable()
-        .authorizeHttpRequests(auth -> auth
-                
-                .requestMatchers("/api/auth/**", "/swagger-ui/**","/api-docs/**")
-                .permitAll()
-                .requestMatchers("/api/auth/**").permitAll() 
-                .anyRequest().authenticated() 
-            )
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable();
 
-    	//----------------------------------------------------
-//    	http.csrf().disable()  // CSRF ko disable karte hai
-//        .authorizeHttpRequests(auth -> auth
-//            .anyRequest().permitAll()  // Har request ko permitAll() set kar diya, authentication required nahi hai
-//        )
-//        .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Filter abhi bhi available hoga, lekin har request permitAll hogi
+        if (ENABLE_ALL_ENDPOINTS) {
+            // If all endpoints should be open, allow everything
+            http.authorizeHttpRequests(auth -> auth
+                    .anyRequest().permitAll() // Allow access to all endpoints
+            );
+        } else {
+            // Otherwise, restrict access based on PUBLIC_ENDPOINTS list
+            http.authorizeHttpRequests(auth -> auth
+                    .requestMatchers(PUBLIC_ENDPOINTS.toArray(new String[0])).permitAll() // Allow listed endpoints
+                    .anyRequest().authenticated() // Require authentication for all other endpoints
+            );
+        }
+
+        // Add JWT filter before UsernamePasswordAuthenticationFilter
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -78,7 +75,7 @@ public class JwtSecurityConfig{
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

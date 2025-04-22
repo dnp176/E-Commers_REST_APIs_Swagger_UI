@@ -1,0 +1,18 @@
+<configuration>
+    <appender name="LOKI" class="com.github.loki4j.logback.LokiAppender">
+        <lokiUrl>http://loki:3100/loki/api/v1/push</lokiUrl>
+        <batchSize>10</batchSize>
+        <label>app=SpringBootApp, env=dev</label>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOKI"/>
+    </root>
+</configuration>
